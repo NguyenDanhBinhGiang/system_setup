@@ -30,8 +30,8 @@ newgrp docker;
 
 # install steam
 mkdir /tmp/steam;
-wget "https://cdn.akamai.steamstatic.com/client/installer/steam.deb" -O /tmp/steam/steam.deb && \
-if dpkg -i /tmp/steam/steam.deb
+sudo wget "https://cdn.akamai.steamstatic.com/client/installer/steam.deb" -O /tmp/steam/steam.deb && \
+if sudo dpkg -i /tmp/steam/steam.deb
 then echo "ok";
 else sudo apt-get -yf install && sudo dpkg -i /tmp/steam/steam.deb
 fi;
@@ -39,8 +39,8 @@ fi;
 
 # install discord
 mkdir /tmp/discord;
-wget "https://discord.com/api/download?platform=linux&format=deb" -O /tmp/discord/discord.deb && \
-if dpkg -i /tmp/discord/discord.deb
+sudo wget "https://discord.com/api/download?platform=linux&format=deb" -O /tmp/discord/discord.deb && \
+if sudo dpkg -i /tmp/discord/discord.deb
 then echo "ok";
 else sudo apt-get -yf install && sudo dpkg -i /tmp/discord/discord.deb
 fi;
@@ -55,7 +55,7 @@ cat ~/script/.bashrc > ~/.bashrc
 
 # install pipewire
 # todo: check if this line is correct
-if [[ ! $(pactl info | grep "Server Name") =~ .*pipewire$ ]];
+if [[ ! $(pactl info | grep "Server Name") =~ .*PipeWire ]];
 then
   # ------------------------------
   # PIPEWIRE AND EASYEFFECTS SETUP
