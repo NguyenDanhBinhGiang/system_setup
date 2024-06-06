@@ -67,8 +67,8 @@ newgrp docker;
 
 # install steam
 mkdir /tmp/steam;
-wget "https://cdn.akamai.steamstatic.com/client/installer/steam.deb" -O /tmp/steam/steam.deb && \
-if dpkg -i /tmp/steam/steam.deb
+sudo wget "https://cdn.akamai.steamstatic.com/client/installer/steam.deb" -O /tmp/steam/steam.deb && \
+if sudo dpkg -i /tmp/steam/steam.deb
 then echo "ok";
 else sudo apt-get -yf install && sudo dpkg -i /tmp/steam/steam.deb
 fi;
@@ -76,20 +76,22 @@ fi;
 
 # install discord
 mkdir /tmp/discord;
-wget "https://discord.com/api/download?platform=linux&format=deb" -O /tmp/discord/discord.deb && \
-if dpkg -i /tmp/discord/discord.deb
+sudo wget "https://discord.com/api/download?platform=linux&format=deb" -O /tmp/discord/discord.deb && \
+if sudo dpkg -i /tmp/discord/discord.deb
 then echo "ok";
 else sudo apt-get -yf install && sudo dpkg -i /tmp/discord/discord.deb
 fi;
 
 
-# install script
+# install convenient scripts
 git clone https://github.com/NguyenDanhBinhGiang/convenient_scripts.git ~/script
 cp ~/script/docker_prune /usr/local/bin/
+sudo apt-get install python3-pip && \
+pip3 install thefuck && \
 cat ~/script/.bashrc > ~/.bashrc
 
 
-# prompt reboot
+# prompt for reboot
 printf "\n\n\n\n";
 read -p "Restart now? (Y/N)" confirm;
 if [[ "$confirm" != "Y" && "$confirm" != "y" ]];

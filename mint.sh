@@ -1,4 +1,4 @@
-echo "This script should not be executed as-is. You should read and modify it first before execute it." && \
+echo "This script is written for Linux Mint 21 Virginia. If you are using other version, check the script before run it" && \
 read -p "Are you ready to run this script? (Y/N)" confirm
 if [[ "$confirm" != "Y" && "$confirm" != "y" ]];
 then exit 1;
@@ -48,12 +48,12 @@ fi;
 # install convenient scripts
 git clone https://github.com/NguyenDanhBinhGiang/convenient_scripts.git ~/script
 cp ~/script/docker_prune /usr/local/bin/
-pip3 install thefuck
+sudo apt-get install python3-pip && \
+pip3 install thefuck && \
 cat ~/script/.bashrc > ~/.bashrc
 
 
 # install pipewire
-# todo: check if this line is correct
 if [[ ! $(pactl info | grep "Server Name") =~ .*PipeWire ]];
 then
   # ------------------------------
@@ -93,7 +93,7 @@ then
 fi
 
 
-# prompt reboot
+# prompt for reboot
 printf "\n\n\n\n";
 echo "Installation finished. Please restart your computer."
 read -p "Restart now? (Y/N)" confirm;
