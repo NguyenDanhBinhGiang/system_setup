@@ -92,9 +92,27 @@ then
   echo "Pipewire and EasyEffects installation finished."
 fi
 
+# install spoof-dpi
+curl -fsSL https://raw.githubusercontent.com/xvzc/SpoofDPI/main/install.sh | bash -s linux && \
+sudo echo "[Unit]
+Description=Spoof DPI
+
+[Service]
+User=hiragawa
+WorkingDirectory=/home/$USER/.spoof-dpi/bin
+ExecStart=/home/$USER/.spoof-dpi/bin/spoof-dpi -port 8123
+
+[Install]
+WantedBy=multi-user.target
+" | sudo tee /etc/systemd/system/spoof-dpi.service && \
+sudo systemctl daemon-reload && \
+sudo systemctl enable spoof-dpi.service && \
+sudo systemctl start spoof-dpi.service;
+
 
 # prompt for reboot
 printf "\n\n\n\n";
+echo "Spoof-DPI proxy server installed at 127.0.0.1:8123. Setup your proxy server in network setting after restart if you want to use Spoof-DPI" && \
 echo "Installation finished. Please restart your computer."
 read -p "Restart now? (Y/N)" confirm;
 if [[ "$confirm" != "Y" && "$confirm" != "y" ]];
