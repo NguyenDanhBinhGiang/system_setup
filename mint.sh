@@ -94,7 +94,7 @@ fi
 
 # install spoof-dpi
 curl -fsSL https://raw.githubusercontent.com/xvzc/SpoofDPI/main/install.sh | bash -s linux && \
-sudo echo "[Unit]
+echo "[Unit]
 Description=Spoof DPI
 
 [Service]
@@ -112,8 +112,20 @@ sudo systemctl start spoof-dpi.service;
 
 # prompt for reboot
 printf "\n\n\n\n";
-echo "Spoof-DPI proxy server installed at 127.0.0.1:8123. Setup your proxy server in network setting after restart if you want to use Spoof-DPI" && \
-echo "Installation finished. Please restart your computer."
+printf "Spoof-DPI proxy server installed at 127.0.0.1:8123.\nSetup your proxy server in network setting after restart if you want to use Spoof-DPI";
+# prompt to automatically settup proxy server
+read -p "Automatically install proxy? Y/N" confirm;
+if [[ "$confirm" != "Y" && "$confirm" != "y" ]];
+then echo "
+http_proxy="http://127.0.0.1:8123/"
+https_proxy="http://127.0.0.1:8123/"
+ftp_proxy="http://127.0.0.1:8123/"
+export http_proxy ftp_proxy https_proxy
+" | sudo tee -a /etc/profile;
+fi;
+
+# Complete notify
+printf "\n\nInstallation finished. Please restart your computer."
 read -p "Restart now? (Y/N)" confirm;
 if [[ "$confirm" != "Y" && "$confirm" != "y" ]];
 then exit 1;
