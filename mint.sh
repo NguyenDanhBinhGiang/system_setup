@@ -93,7 +93,7 @@ then
 fi
 
 # install spoof-dpi
-curl -fsSL https://raw.githubusercontent.com/xvzc/SpoofDPI/main/install.sh | bash -s linux && \
+curl -fsSL https://raw.githubusercontent.com/xvzc/SpoofDPI/main/install.sh | bash -s linux-amd64 && \
 echo "[Unit]
 Description=Spoof DPI
 
