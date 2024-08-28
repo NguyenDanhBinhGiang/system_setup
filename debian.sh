@@ -8,6 +8,12 @@ then
   fi;
 fi;
 
+# todo: check config file existed, delete them if needed
+# todo: fix /etc/apt/source.list
+#  add contrib non-free and delete cd-rom
+#  delete this line: deb cdrom:[Debian GNU/Linux 12.6.0 _Bookworm_ - Official amd64 DVD Binary-1 with firmware 20240629-10:19]/ bookworm contrib main non-free-firmware
+
+
 echo "This script is written for Debian 12 Bookworm.
 If you are using other version, check the script before run it" && \
 if [[ $ok_all != 1 ]];
@@ -24,7 +30,12 @@ sudo apt-get update && sudo apt-get -y install \
 git curl wget bash-completion \
 python3-pip python3-dev python3-venv \
 dconf-editor gnome-shell-extension-dash-to-panel \
-gparted grub-customizer timeshift
+gnome-shell-extension-desktop-icons-ng \
+gparted grub-customizer timeshift vlc fonts-unifont
+
+
+# remove unwanted gnome packages
+sudo apt purge --auto-remove gnome-games
 
 
 # remove Firefox ESR and install new version
@@ -62,7 +73,7 @@ echo \
 sudo apt-get update && \
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin && \
 # add current user to docker group
-sudo groupadd docker ;
+# sudo groupadd docker ;
 sudo usermod -aG docker $USER && \
 newgrp docker;
 
@@ -88,6 +99,7 @@ fi;
 # install convenient scripts
 git clone https://github.com/NguyenDanhBinhGiang/convenient_scripts.git ~/script &&\
 cp ~/script/docker_prune /usr/local/bin/ && \
+mkdir ~/.bash_completion.d && \
 sudo wget "https://raw.githubusercontent.com/cykerway/complete-alias/master/complete_alias" -O ~/.bash_completion.d/complete_alias && \
 git clone https://github.com/nvbn/thefuck.git /tmp/thefuck &&\
 pip3 install --user /tmp/thefuck --break-system-packages && \
@@ -142,10 +154,18 @@ then
   fi;
 fi;
 
-# todo: install nvidia driver
+
+# install nvidia driver
+printf "\n\nMake sure you have fixed /etc/apt/source.list before this step.\n"
+read -p "Ready?" confirm;
+if [[ "$confirm" == "Y" || "$confirm" == "y" || $ok_all == 1 ]]
+then
+sudo apt install -y nvidia-driver firmware-misc-nonfree;
+fi;
+
 
 # Complete notify
-printf "\n\nInstallation finished. Please restart your computer."
+printf "\n\nInstallation finished. Please restart your computer.\n"
 # prompt for reboot
 read -p "Restart now? (Y/N)" confirm;
 if [[ "$confirm" != "Y" && "$confirm" != "y" || $ok_all == 1 ]];
