@@ -36,6 +36,8 @@ gparted grub-customizer timeshift vlc fonts-unifont
 
 # remove unwanted gnome packages
 sudo apt purge --auto-remove gnome-games
+# tweak gnome
+gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"
 
 
 # remove Firefox ESR and install new version
@@ -98,7 +100,7 @@ fi;
 
 # install convenient scripts
 git clone https://github.com/NguyenDanhBinhGiang/convenient_scripts.git ~/script &&\
-cp ~/script/docker_prune /usr/local/bin/ && \
+sudo cp ~/script/docker_prune /usr/local/bin/ && \
 mkdir ~/.bash_completion.d && \
 sudo wget "https://raw.githubusercontent.com/cykerway/complete-alias/master/complete_alias" -O ~/.bash_completion.d/complete_alias && \
 git clone https://github.com/nvbn/thefuck.git /tmp/thefuck &&\
@@ -119,8 +121,8 @@ Description=Spoof DPI
 
 [Service]
 User=hiragawa
-WorkingDirectory=/home/$USER/.spoof-dpi/bin
-ExecStart=/home/$USER/.spoof-dpi/bin/spoof-dpi -port 8123
+WorkingDirectory=/home/$USER/.spoofdpi/bin/
+ExecStart=/home/$USER/.spoofdpi/bin/spoofdpi -port 8123
 
 [Install]
 WantedBy=multi-user.target
