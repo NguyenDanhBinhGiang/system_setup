@@ -14,7 +14,7 @@ fi;
 #  delete this line: deb cdrom:[Debian GNU/Linux 12.6.0 _Bookworm_ - Official amd64 DVD Binary-1 with firmware 20240629-10:19]/ bookworm contrib main non-free-firmware
 
 
-echo "This script is written for Debian 12 Bookworm.
+echo "This script is written for Debian 12 Bookworm with Gnome.
 If you are using other version, check the script before run it" && \
 if [[ $ok_all != 1 ]];
 then
@@ -30,7 +30,7 @@ sudo apt-get update && sudo apt-get -y install \
 git curl wget bash-completion \
 python3-pip python3-dev python3-venv \
 dconf-editor gnome-shell-extension-dash-to-panel \
-gnome-shell-extension-desktop-icons-ng \
+gnome-shell-extension-desktop-icons-ng software-properties-common \
 gparted grub-customizer timeshift vlc fonts-unifont
 
 

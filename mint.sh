@@ -1,4 +1,4 @@
-echo "This script is written for Linux Mint 21 Virginia. If you are using other version, check the script before run it" && \
+echo "This script is written for Linux Mint 21 Virginia. If you are using other version, check the script before running it" && \
 read -p "Are you ready to run this script? (Y/N)" confirm
 if [[ "$confirm" != "Y" && "$confirm" != "y" ]];
 then exit 1;
@@ -47,7 +47,7 @@ fi;
 
 # install convenient scripts
 git clone https://github.com/NguyenDanhBinhGiang/convenient_scripts.git ~/script
-cp ~/script/docker_prune /usr/local/bin/
+sudo cp ~/script/docker_prune /usr/local/bin/
 sudo apt-get install python3-pip && \
 pip3 install thefuck && \
 cat ~/script/.bashrc > ~/.bashrc
@@ -99,8 +99,8 @@ Description=Spoof DPI
 
 [Service]
 User=hiragawa
-WorkingDirectory=/home/$USER/.spoof-dpi/bin
-ExecStart=/home/$USER/.spoof-dpi/bin/spoof-dpi -port 8123
+WorkingDirectory=/home/$USER/.spoofdpi/bin/
+ExecStart=/home/$USER/.spoofdpi/bin/spoofdpi -port 8123
 
 [Install]
 WantedBy=multi-user.target

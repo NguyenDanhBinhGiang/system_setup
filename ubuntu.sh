@@ -85,7 +85,7 @@ fi;
 
 # install convenient scripts
 git clone https://github.com/NguyenDanhBinhGiang/convenient_scripts.git ~/script
-cp ~/script/docker_prune /usr/local/bin/
+sudo cp ~/script/docker_prune /usr/local/bin/
 sudo apt-get install python3-pip && \
 pip3 install thefuck && \
 cat ~/script/.bashrc > ~/.bashrc
