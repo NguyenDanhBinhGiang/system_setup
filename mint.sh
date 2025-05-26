@@ -98,7 +98,7 @@ echo "[Unit]
 Description=Spoof DPI
 
 [Service]
-User=hiragawa
+User=$USER
 WorkingDirectory=/home/$USER/.spoofdpi/bin/
 ExecStart=/home/$USER/.spoofdpi/bin/spoofdpi -port 8123
 
