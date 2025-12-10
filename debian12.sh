@@ -8,12 +8,6 @@ then
   fi;
 fi;
 
-# todo: check config file existed, delete them if needed
-# todo: fix /etc/apt/source.list
-#  add contrib non-free and delete cd-rom
-#  delete this line: deb cdrom:[Debian GNU/Linux 12.6.0 _Bookworm_ - Official amd64 DVD Binary-1 with firmware 20240629-10:19]/ bookworm contrib main non-free-firmware
-
-
 echo "This script is written for Debian 12 Bookworm with Gnome.
 If you are using other version, check the script before run it" && \
 if [[ $ok_all != 1 ]];
@@ -24,7 +18,9 @@ then
   fi;
 fi;
 
-echo "deb http://deb.debian.org/debian bookworm contrib main non-free non-free-firmware" | sudo tee -a /etc/apt/sources.list
+# add contrib and non-free
+# TODO: check if the cd-rom line is still in source.list
+echo "deb http://deb.debian.org/debian bookworm contrib main non-free non-free-firmware" | sudo tee -a /etc/apt/sources.list;
 
 # Install packages
 sudo apt-get update && sudo apt-get -y install \
@@ -32,13 +28,14 @@ git curl wget bash-completion \
 python3-pip python3-dev python3-venv \
 dconf-editor gnome-shell-extension-dash-to-panel \
 gnome-shell-extension-desktop-icons-ng software-properties-common \
-gparted grub-customizer timeshift vlc fonts-unifont
+gparted grub-customizer backintime-qt psensor vlc fonts-unifont;
 
 
 # remove unwanted gnome packages
-sudo apt purge --auto-remove gnome-games
+sudo apt purge --auto-remove gnome-games;
 # tweak gnome
-gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"
+gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close";
+gsettings set org.gnome.nautilus.preferences default-sort-order 'type';
 
 
 # remove Firefox ESR and install new version
@@ -52,7 +49,7 @@ Package: *
 Pin: origin packages.mozilla.org
 Pin-Priority: 1000
 ' | sudo tee /etc/apt/preferences.d/mozilla  && \
-sudo apt-get update && sudo apt-get install -y firefox
+sudo apt-get update && sudo apt-get install -y firefox;
 
 
 # Install Flatpak
@@ -77,8 +74,8 @@ sudo apt-get update && \
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin && \
 # add current user to docker group
 # sudo groupadd docker ;
-sudo usermod -aG docker $USER && \
-newgrp docker;
+sudo usermod -aG docker $USER;
+# newgrp docker;
 
 
 # install steam
@@ -104,21 +101,24 @@ git clone https://github.com/NguyenDanhBinhGiang/convenient_scripts.git ~/script
 sudo cp ~/script/docker_prune /usr/local/bin/ && \
 mkdir ~/.bash_completion.d && \
 sudo wget "https://raw.githubusercontent.com/cykerway/complete-alias/master/complete_alias" -O ~/.bash_completion.d/complete_alias && \
-git clone https://github.com/nvbn/thefuck.git /tmp/thefuck &&\
-pip3 install --user /tmp/thefuck --break-system-packages && \
-cat ~/script/.bashrc > ~/.bashrc
+cat ~/script/.bashrc > ~/.bashrc;
+# git clone https://github.com/nvbn/thefuck.git /tmp/thefuck &&\
+# pip3 install --user /tmp/thefuck --break-system-packages && \
 
 
 # ----------- Install EasyEffects ----------
 # apt install --no-install-recommends xdg-desktop-portal-gnome -y
-# flatpak install flathub com.github.wwmm.easyeffects
+# flatpak install -y flathub com.github.wwmm.easyeffects
 # flatpak permission-reset com.github.wwmm.easyeffects
-sudo apt install -y easyeffects
+sudo apt install -y easyeffects;
 
 
 # install spoof-dpi
-curl -fsSL https://raw.githubusercontent.com/xvzc/SpoofDPI/main/install.sh | bash -s linux-amd64 && \
-echo "[Unit]
+read -p "Install Spoof DPI? (Y/N)" confirm;
+if [[ "$confirm" == "Y" || "$confirm" == "y" || $ok_all == 1 ]]
+then
+  curl -fsSL https://raw.githubusercontent.com/xvzc/SpoofDPI/main/install.sh | bash -s linux-amd64 && \
+  echo "[Unit]
 Description=Spoof DPI
 
 [Service]
@@ -129,20 +129,20 @@ ExecStart=/home/$USER/.spoofdpi/bin/spoofdpi -port 8123
 [Install]
 WantedBy=multi-user.target
 " | sudo tee /etc/systemd/system/spoof-dpi.service && \
-sudo systemctl daemon-reload && \
-sudo systemctl enable spoof-dpi.service && \
-sudo systemctl start spoof-dpi.service && \
-# prompt to automatically settup proxy server
-printf "\n\n\n\nSpoof-DPI proxy server installed at 127.0.0.1:8123.\n
-Setup your proxy server in network setting if you want to use Spoof-DPI" && \
-read -p "Automatically setup proxy? Y/N" confirm && \
-if [[ "$confirm" == "Y" || "$confirm" == "y" || $ok_all == 1 ]]
-then echo "
+  sudo systemctl daemon-reload && \
+  sudo systemctl enable spoof-dpi.service && \
+  sudo systemctl start spoof-dpi.service && \
+  # prompt to automatically settup proxy server
+  printf "\n\n\n\nSpoof-DPI proxy server installed at 127.0.0.1:8123.\nSetup your proxy server in network setting if you want to use Spoof-DPI" && \
+  read -p "Automatically setup proxy? Y/N" confirm && \
+  if [[ "$confirm" == "Y" || "$confirm" == "y" || $ok_all == 1 ]]
+  then echo "
 http_proxy="http://127.0.0.1:8123/"
 https_proxy="http://127.0.0.1:8123/"
 ftp_proxy="http://127.0.0.1:8123/"
 export http_proxy ftp_proxy https_proxy
 " | sudo tee -a /etc/profile;
+  fi;
 fi;
 
 
@@ -160,12 +160,15 @@ fi;
 
 
 # install nvidia driver
-printf "\n\nMake sure you have fixed /etc/apt/source.list before this step.\n"
-read -p "Ready?" confirm;
+printf "\n\nInstalling Nvidia driver\nMake sure you have fixed /etc/apt/source.list before this step.\n";
+read -p "Ready? (Y/N)" confirm;
 if [[ "$confirm" == "Y" || "$confirm" == "y" || $ok_all == 1 ]]
 then
 sudo apt install -y nvidia-driver firmware-misc-nonfree;
 fi;
+
+printf "\n\nInstalling fcitx5-unikey";
+sudo apt update && sudo apt install fcitx5 fcitx5-configtool fcitx5-unikey
 
 
 # Complete notify

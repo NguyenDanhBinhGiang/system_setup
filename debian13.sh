@@ -8,7 +8,7 @@ then
   fi;
 fi;
 
-echo "This script is written for Debian 12 Bookworm with Gnome.
+echo "This script is written for Debian 13 Trixie with Gnome.
 If you are using other version, check the script before run it" && \
 if [[ $ok_all != 1 ]];
 then
@@ -19,7 +19,7 @@ then
 fi;
 
 # add contrib and non-free
-echo "deb http://deb.debian.org/debian trixie contrib main non-free non-free-firmware" | sudo tee -a /etc/apt/sources.list
+echo "deb http://deb.debian.org/debian trixie contrib main non-free non-free-firmware" | sudo tee -a /etc/apt/sources.list;
 # install linux header
 sudo apt update && sudo apt install -y linux-headers-$(dpkg --print-architecture)
 
@@ -28,15 +28,14 @@ sudo apt update && sudo apt install -y linux-headers-$(dpkg --print-architecture
 sudo apt-get update && sudo apt-get -y install \
 git curl wget bash-completion \
 python3-pip python3-dev python3-venv \
-dconf-editor gparted grub-customizer backintime-qt psensor vlc fonts-unifont
+dconf-editor gparted grub-customizer backintime-qt psensor vlc fonts-unifont;
 # TODO: software-properties-common gnome-shell-extension-desktop-icons-ng gnome-shell-extension-dash-to-panel 
 # https://extensions.gnome.org/extension/615/appindicator-support/
 
 
-# remove unwanted gnome packages
 # tweak gnome
-gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close"
-gsettings set org.gnome.nautilus.preferences default-sort-order 'type'
+gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close";
+gsettings set org.gnome.nautilus.preferences default-sort-order 'type';
 
 
 # remove Firefox ESR and install new version
@@ -50,7 +49,7 @@ Package: *
 Pin: origin packages.mozilla.org
 Pin-Priority: 1000
 ' | sudo tee /etc/apt/preferences.d/mozilla  && \
-sudo apt-get update && sudo apt-get install -y firefox
+sudo apt-get update && sudo apt-get install -y firefox;
 
 
 # Install Flatpak
@@ -75,8 +74,8 @@ sudo apt-get update && \
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin && \
 # add current user to docker group
 # sudo groupadd docker ;
-sudo usermod -aG docker $USER && \
-newgrp docker;
+sudo usermod -aG docker $USER;
+# newgrp docker;
 
 
 # install steam
@@ -102,7 +101,7 @@ git clone https://github.com/NguyenDanhBinhGiang/convenient_scripts.git ~/script
 sudo cp ~/script/docker_prune /usr/local/bin/ && \
 mkdir ~/.bash_completion.d && \
 sudo wget "https://raw.githubusercontent.com/cykerway/complete-alias/master/complete_alias" -O ~/.bash_completion.d/complete_alias && \
-cat ~/script/.bashrc > ~/.bashrc
+cat ~/script/.bashrc > ~/.bashrc;
 # git clone https://github.com/nvbn/thefuck.git /tmp/thefuck &&\
 # pip3 install --user /tmp/thefuck --break-system-packages && \
 
@@ -111,7 +110,7 @@ cat ~/script/.bashrc > ~/.bashrc
 # apt install --no-install-recommends xdg-desktop-portal-gnome -y
 # flatpak install -y flathub com.github.wwmm.easyeffects
 # flatpak permission-reset com.github.wwmm.easyeffects
-sudo apt install -y easyeffects
+sudo apt install -y easyeffects;
 
 
 # install spoof-dpi
@@ -146,6 +145,7 @@ export http_proxy ftp_proxy https_proxy
   fi;
 fi;
 
+
 # install java
 read -p "Install Java? (Y/N)" confirm;
 if [[ "$confirm" == "Y" || "$confirm" == "y" || $ok_all == 1 ]]
@@ -160,7 +160,7 @@ fi;
 
 
 # install nvidia driver
-printf "\n\nMake sure you have fixed /etc/apt/source.list before this step.\n"
+printf "\n\nInstalling Nvidia driver\nMake sure you have fixed /etc/apt/source.list before this step.\n";
 read -p "Ready? (Y/N)" confirm;
 if [[ "$confirm" == "Y" || "$confirm" == "y" || $ok_all == 1 ]]
 then
